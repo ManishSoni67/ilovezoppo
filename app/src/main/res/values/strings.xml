@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ILoveZappos</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_share">Share</string>
+    <string name="scene_no_network">No network detected, you might have to check your network settings</string>
+    <string name="scene_no_data">we are not able to receive what you are looking for, please retry and give us another chance</string>
+</resources>

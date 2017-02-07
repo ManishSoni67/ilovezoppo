@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+
+        <import type="android.view.View" />
+
+        <variable
+            name="product"
+            type="co.manishsoni.ilovezappos.Models.Results" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_product_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="co.manishsoni.ilovezappos.Activities.productDetailActivity">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/img_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/img_banner_width"
+                        android:background="@color/defBackgroundColor"
+                        android:minHeight="@dimen/card_min_height"
+                        android:minWidth="@dimen/card_min_width"
+                        android:src="@drawable/def_image" />
+
+                    <TextView
+                        android:id="@+id/txt_sale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="@dimen/small_text_Margin"
+                        android:text="SALE!"
+                        android:textColor="@color/discountedPriceColor"
+                        android:textSize="@dimen/medium_text_size"
+                        android:textStyle="bold"
+                        android:visibility="@{product.ifPriceChanged?View.VISIBLE:View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/txt_discount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="false"
+                        android:layout_below="@+id/img_product"
+                        android:layout_centerHorizontal="false"
+                        android:layout_marginTop="@dimen/discount_text_detail_page_top_Margin"
+                        android:background="#CCFFFFFF"
+                        android:padding="@dimen/discount_padding"
+                        android:text="@{product.percentOffSaleBanner}"
+                        android:textColor="@color/discountedPriceColor"
+                        android:textSize="@dimen/medium_text_size"
+                        android:textStyle="bold"
+                        android:visibility="@{product.ifPriceChanged?View.VISIBLE:View.GONE}" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/container_padding"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/txt_brand_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{product.brandName}"
+                        android:textColor="@color/emphasisColor"
+                        android:textSize="@dimen/large_text_size" />
+
+                    <TextView
+                        android:id="@+id/txt_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_text_Margin_top"
+                        android:maxLines="2"
+                        android:minLines="2"
+                        android:text="@{product.productName}"
+                        android:textSize="@dimen/medium_text_size" />
+
+                    <TextView
+                        android:id="@+id/txt_original_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/large_text_Margin_top"
+                        android:text="@{product.originalPrice}"
+                        android:textColor="@color/priceColor"
+                        android:textSize="@dimen/medium_text_size"
+                        android:visibility="@{product.ifPriceChanged?View.VISIBLE:View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/txt_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/large_text_Margin_top"
+                        android:text="@{product.price}"
+                        android:textColor="@color/priceColor"
+                        android:textSize="@dimen/large_text_size" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/loading_spinner"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:elevation="7dp"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_network"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/defBackgroundColor"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/no_wifi" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scene_no_network"
+                    android:textAlignment="center"
+                    android:textColor="@color/noNetworkForegroundColor"
+                    android:textSize="@dimen/large_text_size" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:background="@color/noNetworkForegroundColor"
+                    android:onClick="onRetryClicked"
+                    android:text="retry"
+                    android:textColor="@color/cardview_light_background" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/defBackgroundColor"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/nodata" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scene_no_data"
+                    android:textAlignment="center"
+                    android:textColor="@color/noNetworkForegroundColor"
+                    android:textSize="@dimen/large_text_size" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:background="@color/noNetworkForegroundColor"
+                    android:onClick="onRetryClicked"
+                    android:text="retry"
+                    android:textColor="@color/cardview_light_background" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</layout>
