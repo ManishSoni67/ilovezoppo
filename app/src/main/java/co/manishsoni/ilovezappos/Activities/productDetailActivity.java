@@ -8,19 +8,24 @@ import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
 
@@ -32,11 +37,12 @@ import co.manishsoni.ilovezappos.AsyncTasks.ProductImageDownLoadTask;
 import co.manishsoni.ilovezappos.Models.Results;
 import co.manishsoni.ilovezappos.R;
 import co.manishsoni.ilovezappos.Utilities.IResponseView;
+import co.manishsoni.ilovezappos.Utilities.LocalPrefecrences;
 import co.manishsoni.ilovezappos.Utilities.ResponseModel;
 import co.manishsoni.ilovezappos.Utilities.Utils;
 import co.manishsoni.ilovezappos.Utilities.ZapposWebClient;
 
-public class productDetailActivity extends AppCompatActivity implements IResponseView {
+public class productDetailActivity extends AppCompatActivity implements IResponseView, View.OnClickListener {
 
     String productid;
     final Results product = new Results();
@@ -57,6 +63,10 @@ public class productDetailActivity extends AppCompatActivity implements IRespons
     ViewDataBinding binding;
 
 
+    private Boolean isFabOpen = false;
+    private FloatingActionButton fab_show, fab_share, fab_addToCart;
+    private Animation fab_open, fab_close, rotate_forward, rotate_backward, bounce_fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +86,22 @@ public class productDetailActivity extends AppCompatActivity implements IRespons
             txt_price = (TextView) this.findViewById(R.id.txt_price);
             txt_discount = (TextView) this.findViewById(R.id.txt_discount);
             txt_sale = (TextView) this.findViewById(R.id.txt_sale);
+
+            // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            // setSupportActionBar(toolbar);
+            fab_show = (FloatingActionButton) findViewById(R.id.fab_show);
+            fab_share = (FloatingActionButton) findViewById(R.id.fab_share);
+            fab_addToCart = (FloatingActionButton) findViewById(R.id.fab_cart);
+            fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fb_open);
+            fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fb_close);
+            rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+            rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
+            bounce_fab = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_bounce);
+
+            fab_show.setOnClickListener(this);
+            fab_share.setOnClickListener(this);
+            fab_addToCart.setOnClickListener(this);
+
             getIntentDataandgetProductInfo(getIntent());
         } catch (Exception e) {
 
@@ -260,5 +286,66 @@ public class productDetailActivity extends AppCompatActivity implements IRespons
     public void onRetryClicked(View v) {
 
         intitateWebTask();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_show:
+                animateFAB_show();
+                break;
+            case R.id.fab_share:
+                invokeShareIntent();
+                break;
+            case R.id.fab_cart:
+                addto_cart();
+                break;
+        }
+    }
+
+    private void animateFAB_show() {
+
+        if (isFabOpen) {
+            isFabOpen = false;
+            fab_show.startAnimation(rotate_backward);
+            fab_share.startAnimation(fab_close);
+            fab_addToCart.startAnimation(fab_close);
+            fab_share.setClickable(false);
+            fab_addToCart.setClickable(false);
+        } else {
+            isFabOpen = true;
+            fab_show.startAnimation(rotate_forward);
+            fab_share.startAnimation(fab_open);
+            fab_addToCart.startAnimation(fab_open);
+            fab_share.setClickable(true);
+            fab_addToCart.setClickable(true);
+        }
+    }
+
+    private void addto_cart() {
+
+        String msg = "";
+        try {
+            fab_addToCart.startAnimation(bounce_fab);
+
+            LocalPrefecrences localPrefecrences = new LocalPrefecrences(this);
+            if (localPrefecrences.cartHasAlreadyAdded(productid)) {
+                msg = getResources().getString(R.string.err_product_id_already_added);
+            } else {
+                if (localPrefecrences.addProductToCart(productid)) {
+                    msg = getResources().getString(R.string.product_added);
+                } else {
+                    msg = getResources().getString(R.string.err_def_product_add_operation);
+                }
+            }
+
+        } catch (Exception e) {
+            msg = getResources().getString(R.string.err_def_product_add_operation);
+
+        }
+
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+
+
     }
 }

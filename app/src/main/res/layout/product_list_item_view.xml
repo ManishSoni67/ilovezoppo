@@ -4,7 +4,6 @@
 
     <data>
 
-        <import type="co.manishsoni.ilovezappos.BindingUtils.Converters" />
 
         <import type="android.view.View" />
 

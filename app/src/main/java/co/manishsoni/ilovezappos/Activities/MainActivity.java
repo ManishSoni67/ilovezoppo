@@ -3,6 +3,7 @@ package co.manishsoni.ilovezappos.Activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,12 +15,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import co.manishsoni.ilovezappos.Adapters.ProductItemAdapter;
 import co.manishsoni.ilovezappos.R;
 import co.manishsoni.ilovezappos.Utilities.IResponseView;
+import co.manishsoni.ilovezappos.Utilities.LocalPrefecrences;
 import co.manishsoni.ilovezappos.Utilities.ResponseModel;
 import co.manishsoni.ilovezappos.Utilities.Utils;
 import co.manishsoni.ilovezappos.Utilities.ZapposWebClient;
@@ -35,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements IResponseView {
     RelativeLayout layout_no_data;
     RecyclerView.Adapter<ProductItemAdapter.ProductListViewHolder> myAdapter;
 
+    private Animation bounce_fab;
+
+    private FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +51,12 @@ public class MainActivity extends AppCompatActivity implements IResponseView {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         noNetworkLayout = (RelativeLayout) findViewById(R.id.layout_network);
         myRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         layout_no_data = (RelativeLayout) findViewById(R.id.layout_no_data);
         myRecyclerView.setHasFixedSize(false);
-
+        bounce_fab = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_bounce);
 
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             myRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -65,10 +75,14 @@ public class MainActivity extends AppCompatActivity implements IResponseView {
             }
         });
         intitateWebTask();
+        updateCartCount();
+    }
 
-        Intent in = new Intent(this, productDetailActivity.class);
+    @Override
+    public void onResume() {
+        super.onResume();
 
-
+        updateCartCount();
     }
 
     @Override
@@ -225,5 +239,30 @@ public class MainActivity extends AppCompatActivity implements IResponseView {
 
         intitateWebTask();
     }
+
+    public void updateCartCount() {
+
+        try {
+
+            LocalPrefecrences localPrefecrences = new LocalPrefecrences(this);
+            int count = localPrefecrences.getAddedProductCount();
+            if (count > 0) {
+                ((TextView) findViewById(R.id.txt_products)).setText("" + count);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        fab.startAnimation(bounce_fab);
+                    }
+                }, 300);
+            }
+
+
+        } catch (Exception e) {
+            Log.d("", e.getMessage());
+
+        }
+    }
+
 
 }

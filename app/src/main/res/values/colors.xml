@@ -9,4 +9,8 @@
     <color name="emphasisColor">#000000</color>
     <color name="defBackgroundColor">#FFFFFF</color>
     <color name="noNetworkForegroundColor">#FF7568</color>
+
+
+    <color name="colorFABShare">#476b6b</color>
+    <color name="colorFABCart">#50f442</color>
 </resources>

@@ -119,12 +119,31 @@
         </LinearLayout>
     </RelativeLayout>
 
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_share" />
+        android:layout_gravity="end|bottom">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@drawable/shopping_cart" />
+
+        <TextView
+            android:id="@+id/txt_products"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/fab_margin"
+            android:elevation="10dp"
+            android:padding="1dp"
+            android:text="0"
+            android:textColor="@color/emphasisColor"
+            android:textSize="@dimen/medium_text_size"
+            android:textStyle="normal" />
+    </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

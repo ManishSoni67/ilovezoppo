@@ -4,4 +4,12 @@
     <string name="action_share">Share</string>
     <string name="scene_no_network">No network detected, you might have to check your network settings</string>
     <string name="scene_no_data">we are not able to receive what you are looking for, please retry and give us another chance</string>
+    <string name="pref_key">zapposCartKey</string>
+
+    <string name="err_product_id_not_valid">product id is not valid, please reload the product details</string>
+    <string name="err_product_id_already_added">product is already added to cart</string>
+    <string name="product_added">product is successfully added to the cart</string>
+
+    <string name="err_def_product_add_operation">something went wrong, please try adding it one more time</string>
+
 </resources>
